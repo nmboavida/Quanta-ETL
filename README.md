@@ -25,7 +25,7 @@ The following project requires:
  1. Having [Docker](https://www.docker.com/) installed.
  2. Having an account with Amazon Web Services
 
-This project spawns EMR Clusters and loads data to an S3 bucket, therefore there are costs associated to running this project.
+This project spawns an EMR Cluster and loads data to an S3 bucket, therefore there are costs associated to running this project.
 
 ### Methodology
 The project sets up a docker container configured to run airflow locally. Airflow is then used to orchestrated the job.
@@ -39,7 +39,7 @@ After the files being loaded to the s3 bucket an airflow operator is tasked to l
 - 1 Master Node
 - 4 Core/Slave Nodes
 
-Once the cluster is launched another operator is tasked to add the steps to the EMR Cluster. Steps are essentially used to submit work to the Spark Framework installed in the EMR CLuster.
+Once the cluster is launched another operator is tasked to add the steps to the EMR Cluster. Steps are essentially used to submit work to the Spark Framework installed in the EMR Cluster.
 You can find documentation [here](https://docs.amazonaws.cn/en_us/emr/latest/ReleaseGuide/emr-spark-submit-step.html) to learn more about steps in EMR Clusters.
 In this project we add one step to submit our spark job to the cluster.
 
