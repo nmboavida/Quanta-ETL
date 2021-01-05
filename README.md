@@ -46,7 +46,7 @@ In this project we add one step to submit our spark job to the cluster.
 The spark job will then run once the cluster is ready and all the steps were added. Note that it may take around 5-10 minutes for the cluster to start and to be ready to perform our spark job.
 
 Once the cluster is ready and the spark job is running you can monitor the job in Amazon's EMR Console. 
-Once the job is finished the output can be found in the s3 bucket, consisting of two main partitioned parquet files with the trading data from Xetra and EUREX,
+Once the job is finished the output can be found in the s3 bucket, consisting of two main partitioned parquet files with the trading data from XETRA and EUREX,
  as well as two parquet files with the result of two data quality checks executed on the EUREX dataset. These checks record which derivatives are missing ISINs and which are missing an Underlying Asset. This information can be subsequently acquired from the `eurex_product_specification.csv`
 
 Note: To run this project you must specify an s3 bucket to load the files mentioned above as as well as the output of the spark job.
@@ -62,6 +62,7 @@ The datasets can be found in the following public s3 buckets:
 
 One can find sample data in the folder `/sample-data` in this repository.
 Below is an example of the data represented in a dictionary.
+
 XETRA:
 ```json
 {
