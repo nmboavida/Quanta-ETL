@@ -1,0 +1,11 @@
+# notebook checkpoints
+.ipynb_checkpoints
+
+# jupyter notebook
+spark_etl.ipynb
+
+.idea
+
+__pycache__
+
+.DS_Store

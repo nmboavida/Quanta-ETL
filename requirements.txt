@@ -1,0 +1,5 @@
+configparser~=5.0.1
+pyspark~=3.0.1
+botocore>=1.12
+boto3===1.8.4
+apache-airflow[s3]>=1.10
