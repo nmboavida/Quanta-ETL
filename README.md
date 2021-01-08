@@ -167,10 +167,14 @@ Schema for  EUREX derivative price and transaction data:
 | underlying_name            | StringType                  | True     |
 | underlying_category        | StringType                  | True     |
 
-About the data model:
+Considerations on the data model chosen:
 
 - Despite Xetra and Eurex table recording different asset types both datasets are related to each other as the underyling assets of the instruments traded with Eurex can be found in the Xetra table (provided the underlying asset is traded within that exchange).
-- Therefore to analyse relationships between transactions and price changes of derivatives and it's underlying assets (provided they are traded in Xetra) we can join both tables using `eurex.underlying_isin == xetra.isin` and `eurex.trading_ts == xetra.trading_ts`. Additionally, one can generate a uuid...
+- Therefore to analyse relationships between transactions and price changes of derivatives and it's underlying assets (provided they are traded in Xetra) we can join both tables using `eurex.underlying_isin == xetra.isin` and `eurex.trading_ts == xetra.trading_ts`. One can also generate a hash using these two columns for each dataset to facilitate join.
+- This data model makes it easy to calculate minute-by-minute asset price returns. To calculate the returns one can shift `df.end_price` by one observation, grouped by isin. Then we calculate returns as `returns = (df.end_price / df.end_price_prev) - 1`. One can also calculate the volatility of returns, however this operation can be more computationally intensive as the volatitlity for each observation natually relies on a rolling window of previous observations.
+- This data model can be aggregated to view transactions on a less granular timeframe. The column `trading_ts` will facilitate the aggregation but further columns can be added to the dataset to increase the swiftness of the process.
+- One can also decide to use `trading_ts` to aggregate transactions and prices of various assets to create indices
+- As a final remark, the decision to make the data model more or less parsimonious will also depend on the frequency of the queries we want to run on the data. If these queries run on a scheduled basis, we can create intermediate columns downstream to facilitate the querying. Conversely, if the queries are running throughout the day multiple times it can be an wise to add these intermediate columns in the ETL process here described.
 
 
 ### Run
