@@ -14,7 +14,12 @@ XETRA German Electronic Exchange data consists of:
 - Option chains for:
     - Indices (Equity and Volatility)
     - Individual stocks
+- Futures
     - Fixed Income Futures
+    - Index Dividend Futures
+    - Volatility Index Futures
+    - Single Stock Dividend Futures
+    - Single Stock Futures
 
 The available data starts from the 17th of June 2017. Note that observations in the dataset are on the basis of transactions,
  therefore if there were no trades for a given asset at a given point in time (say at time 08:01) there will be no observation for that particular asset at and that time and 
