@@ -167,6 +167,12 @@ Schema for  EUREX derivative price and transaction data:
 | underlying_name            | StringType                  | True     |
 | underlying_category        | StringType                  | True     |
 
+About the data model:
+
+- Despite Xetra and Eurex table recording different asset types both datasets are related to each other as the underyling assets of the instruments traded with Eurex can be found in the Xetra table (provided the underlying asset is traded within that exchange).
+- Therefore to analyse relationships between transactions and price changes of derivatives and it's underlying assets (provided they are traded in Xetra) we can join both tables using `eurex.underlying_isin == xetra.isin` and `eurex.trading_ts == xetra.trading_ts`. Additionally, one can generate a uuid...
+
+
 ### Run
 
 1. Run docker-compose:
@@ -220,9 +226,9 @@ Schema for  EUREX derivative price and transaction data:
 
 ### Final Considerations
 
-The decision to use spark in cluster mode helped cooping with the amount of data handled in this project and the decision to choose 4 core nodes came from the inital estimation that both datasets would take up to 20 GB of space, thus making it impractical to wrangle this data locally.
+The decision to use spark in cluster mode helped cooping with the amount of data handled in this project and the decision to choose 4 core nodes came from the inital estimation that both datasets would take up to 20 GB of space, thus making it impractical to wrangle this data locally. Additionally, Spark supports the data science workflow end-to-end, from data ingestion to integration to machine learning and business inteligence applications. By using spark we can take advantage out of it's growing machine-learning algorithms library MLl ib. Spark has a large online community which subsequently improves the coding experience.
 
-Using Airflow enhanced the project experience not just for providing orchestration but also for specifically provide operators that create, manage and terminate the EMR cluster.
+Airflow makes it easy to monitor the state of a pipeline in their UI. Using Airflow enhanced the project experience not just for providing orchestration but also for specifically provide operators that create, manage and terminate the EMR cluster. Using Airflow also facilitates the handling of user-specific variables, since variables such as s3_bucket uri and aws credentials can me given directly to airflow.
 
 ### Addressing Other Scenarios
 
@@ -239,4 +245,7 @@ As part of this project I was tasked to describe what logical approaches I would
 
 3. The database needed to be accessed by 100+ people.
     
-    The bucket policies would have to be changed.
+    The application as it is designed can easily achieve thousands of transactions per second when uploading and retrieving storage from Amazon S3 as S3 automatically scales to high request rates rates. The application can achieve at least 3,500 PUT/COPY/POST/DELET or 5,000 GET/HEAD requests per secod per prefix in a bucket. Therefore, if the number of users accessing and reading at the same time increases we can also increase the prefixes to parallelize reads.
+
+    
+   
