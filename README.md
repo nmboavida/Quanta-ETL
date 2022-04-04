@@ -1,4 +1,4 @@
-## DEND-Capstone Project: Deustche Boerse Data Pipeline
+## Deustche Boerse Data Pipeline
 For this project I developed a data pipeline to ingest intra-day asset price and transaction data (minute-by-minute basis) from Eurex Exchange and XETRA German Electronic Exchange, both being under Deutsche Börse AG.
 
 Eurex Exchange data consists of price and transaction data of:
