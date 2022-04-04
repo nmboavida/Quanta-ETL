@@ -1,7 +1,5 @@
 ## DEND-Capstone Project: Deustche Boerse Data Pipeline
-
-This repo consists of my last Udacity Data Engineering NanoDegree project, namely the Capstone Project. For this project 
-I developed a data pipeline to ingest intra-day asset price and transaction data (minute-by-minute basis) from Eurex Exchange and XETRA German Electronic Exchange, both being under Deutsche Börse AG.
+For this project I developed a data pipeline to ingest intra-day asset price and transaction data (minute-by-minute basis) from Eurex Exchange and XETRA German Electronic Exchange, both being under Deutsche Börse AG.
 
 Eurex Exchange data consists of price and transaction data of:
 
@@ -241,20 +239,16 @@ Airflow makes it easy to monitor the state of a pipeline in their UI. Using Airf
 
 ### Addressing Other Scenarios
 
-As part of this project I was tasked to describe what logical approaches I would take if:
+What if:
 
 1. The data was increased by 100x.
     
-    If the data increased by 100x I would consider increasing the amount EMR Cluster nodes in order to avoid bottlenecks. I would also consider to choose nodes that would be optimized for the job instead of the multi-purpose nodes chosen.
+    If the data increased by 100x we would consider increasing the amount EMR Cluster nodes in order to avoid bottlenecks. We would also consider to choose nodes that would be optimized for the job instead of the multi-purpose nodes chosen.
 
 2. The pipelines would be run on a daily basis by 7 am every day.
 
-    This is in fact a very real scenario considering that the the source dataset is updated on a daily basis.
-    in new trading data. To accommodate this I would modify the DAG to run a daily job scheduled for 7 am, and would add  a function on the spark script that primarily analyses which data is already present in the output s3 bucket so that we only ingest new data. An alternative is to empty the output s3 bucket in the beginning of the DAG and ingest the whole dataset every day, however this option is far from being cost efficient.
+    This is in fact a very real scenario considering that the the source dataset is updated on a daily basis with new trading data. To accommodate this one can modify the DAG to run a daily job scheduled for 7 am, and add  a function on the spark script that primarily analyses which data is already present in the output s3 bucket so that we only ingest new data. An alternative is to empty the output s3 bucket in the beginning of the DAG and ingest the whole dataset every day, however this option is far from being cost efficient.
 
 3. The database needed to be accessed by 100+ people.
     
     The application as it is designed can easily achieve thousands of transactions per second when uploading and retrieving storage from Amazon S3 as S3 automatically scales to high request rates rates. The application can achieve at least 3,500 PUT/COPY/POST/DELET or 5,000 GET/HEAD requests per secod per prefix in a bucket. Therefore, if the number of users accessing and reading at the same time increases we can also increase the prefixes to parallelize reads.
-
-    
-   
