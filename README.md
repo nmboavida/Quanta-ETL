@@ -1,5 +1,5 @@
-## Deustche Boerse Data Pipeline
-For this project I developed a data pipeline to ingest intra-day asset price and transaction data (minute-by-minute basis) from Eurex Exchange and XETRA German Electronic Exchange, both being under Deutsche Börse AG.
+## Quanta ETL
+An ETL pipeline for ingesting intra-day asset price and transaction data (minute-by-minute basis) from Eurex Exchange and XETRA German Electronic Exchange, both being under Deutsche Börse AG.
 
 Eurex Exchange data consists of price and transaction data of:
 
@@ -233,22 +233,4 @@ Considerations on the data model chosen:
 
 ### Final Considerations
 
-The decision to use spark in cluster mode helped cooping with the amount of data handled in this project and the decision to choose 4 core nodes came from the inital estimation that both datasets would take up to 20 GB of space, thus making it impractical to wrangle this data locally. Additionally, Spark supports the data science workflow end-to-end, from data ingestion to integration to machine learning and business inteligence applications. By using spark we can take advantage out of it's growing machine-learning algorithms library MLl ib. Spark has a large online community which subsequently improves the coding experience.
-
-Airflow makes it easy to monitor the state of a pipeline in their UI. Using Airflow enhanced the project experience not just for providing orchestration but also for specifically provide operators that create, manage and terminate the EMR cluster. Using Airflow also facilitates the handling of user-specific variables, since variables such as s3_bucket uri and aws credentials can me given directly to airflow.
-
-### Addressing Other Scenarios
-
-What if:
-
-1. The data was increased by 100x.
-    
-    If the data increased by 100x we would consider increasing the amount EMR Cluster nodes in order to avoid bottlenecks. We would also consider to choose nodes that would be optimized for the job instead of the multi-purpose nodes chosen.
-
-2. The pipelines would be run on a daily basis by 7 am every day.
-
-    This is in fact a very real scenario considering that the the source dataset is updated on a daily basis with new trading data. To accommodate this one can modify the DAG to run a daily job scheduled for 7 am, and add  a function on the spark script that primarily analyses which data is already present in the output s3 bucket so that we only ingest new data. An alternative is to empty the output s3 bucket in the beginning of the DAG and ingest the whole dataset every day, however this option is far from being cost efficient.
-
-3. The database needed to be accessed by 100+ people.
-    
-    The application as it is designed can easily achieve thousands of transactions per second when uploading and retrieving storage from Amazon S3 as S3 automatically scales to high request rates rates. The application can achieve at least 3,500 PUT/COPY/POST/DELET or 5,000 GET/HEAD requests per secod per prefix in a bucket. Therefore, if the number of users accessing and reading at the same time increases we can also increase the prefixes to parallelize reads.
+This project leverages Apache Spark in cluster mode to manage the extensive data volume, estimated to be around 20 GB across two datasets. This approach was more efficient than local data handling. Spark was selected for its comprehensive support in the data science workflow, encompassing data ingestion, integration, machine learning, and business intelligence applications. sily achieve thousands of transactions per second when uploading and retrieving storage from Amazon S3 as S3 automatically scales to high request rates rates. The application can achieve at least 3,500 PUT/COPY/POST/DELET or 5,000 GET/HEAD requests per secod per prefix in a bucket. Therefore, if the number of users accessing and reading at the same time increases we can also increase the prefixes to parallelize reads.
